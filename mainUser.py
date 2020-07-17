@@ -63,16 +63,21 @@ types = []
 bbox = []
 texts = []
 
-orginAddress = input('Address : ')
+userID = input('userID : ')
 
-originGeoInfo = getcodeCoordFromAddr(orginAddress)
+tweets = api.user_timeline(screen_name=userID,
+                           # 200 is the maximum allowed count
+                           count=200,
+                           include_rts = False,
+                           # Necessary to keep full_text
+                           # otherwise only the first 140 words are extracted
+                           tweet_mode = 'extended'
+                           )
 
-if originGeoInfo != None:
+if tweets != None:
 
-    search_range = input('Search range (Km) : ')
-
-    for tweet in geoloactedTweets(api ,originGeoInfo, search_range, 10):
-        #print(tweet._json)
+    for tweet in tweets:
+        print(tweet._json)
 
         location = tweet._json['user']['location']
 
@@ -82,7 +87,10 @@ if originGeoInfo != None:
         lngVal = None
         typesVal = None
         bboxVal = None
-        text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
+        if tweet._json["full_text"]:
+            text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["full_text"]
+        else:
+            text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
 
         if tweet._json["coordinates"]:
             typesVal = "coordinates"
@@ -101,7 +109,7 @@ if originGeoInfo != None:
         if typesVal != "bounding_box" and latVal != None and lngVal != None:
             lat.append(latVal)
             lng.append(lngVal)
-            places.append(orginAddress)
+            places.append('origin')
             values.append(1)
             types.append(typesVal)
             bbox.append(bboxVal)
@@ -129,14 +137,7 @@ if originGeoInfo != None:
     # Make an empty map
     m = folium.Map()
 
-    folium.Circle(
-            location=[originGeoInfo['geometry']['location']['lat'], originGeoInfo['geometry']['location']['lng']],
-            popup='Search point',
-            radius=search_range * 1000,
-            color='crimson',
-            fill=True,
-            fill_color='crimson'
-        ).add_to(m)
+
 
     # I can add marker one by one on the map
     for i in range(0, len(data)):
@@ -150,7 +151,7 @@ if originGeoInfo != None:
             ).add_to(m)
         elif data.iloc[i]['type'] == 'bounding_box':
             folium.Marker(
-                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.Choice(range(-10,10)), sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.Choice(range(-10,10))],
+                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.Choice(range(-100,100)), sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.Choice(range(-100,100))],
                 popup=data.iloc[i]['text'],
                 color='crimson',
                 fill=True,
