@@ -158,4 +158,4 @@ if originGeoInfo != None:
             ).add_to(m)
 
     # Save it as html
-    m.save('./html/trump.html')
+    m.save('./html/location.html')
