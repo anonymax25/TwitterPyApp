@@ -5,13 +5,16 @@ import tweepy
 import folium
 import pandas as pd
 import random
+import yaml
 
+with open("config.yml", "r") as conf:
+    cfg = yaml.load(conf, Loader=yaml.FullLoader)
 
-consumer_key = "nEfVi8N8KBmcmxWC5KqJxdHdc"
-consumer_secret = "tK8853ShfWoTaV7smB9X7Mq7RMZmqX3iv7ElmaRXvPT4FMqaqP"
-access_key = "1277992408052105217-9bvcOzqKgTx8YJlG2zf3Wtj0ptBoOy"
-access_secret = "WgmkljliSqA6qjqKwY6DLPSbkDdQzHmhZFKS9E0m0bEQR"
-bearer_token = "AAAAAAAAAAAAAAAAAAAAAMVGFgEAAAAA%2FYJFSdycowTGFf0tcRP9%2BaerZso%3DF3IahdxCBX6nwp6L1Q4bW6ExUlAuLkMKhEXzyYQjQwThyqAcFv"
+consumer_key = cfg["consumer_key"]
+consumer_secret = cfg["consumer_secret"]
+access_key = cfg["access_key"]
+access_secret = cfg["access_secret"]
+bearer_token = cfg["bearer_token"]
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
