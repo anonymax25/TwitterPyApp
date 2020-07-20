@@ -1,8 +1,8 @@
+import os
+import webbrowser
 import tweepy
 import folium
 import pandas as pd
-from shapely.geometry import Polygon
-import json
 import random
 
 consumer_key = "nEfVi8N8KBmcmxWC5KqJxdHdc"
@@ -50,82 +50,75 @@ def getcodeCoordFromAddr(address):
     except:
         return None
 
+
 def geoloactedTweets(api, geoInfo, rangeKm, count):
-    return api.search(geocode=str(geoInfo['geometry']['location']['lat']) + "," + str(geoInfo['geometry']['location']['lng']) + "," + str(rangeKm) + "km", lang="en", count=count)
+    return api.search(geocode=str(geoInfo['geometry']['location']['lat']) + "," + str(
+        geoInfo['geometry']['location']['lng']) + "," + str(rangeKm) + "km", lang="en", count=count)
 
 
+def getTweetsByAddress(orginAddress, search_range):
+    lat = []
+    lng = []
+    places = []
+    values = []
+    types = []
+    bbox = []
+    texts = []
 
-lat = []
-lng = []
-places = []
-values = []
-types = []
-bbox = []
-texts = []
+    originGeoInfo = getcodeCoordFromAddr(orginAddress)
 
-orginAddress = input('Address : ')
+    if originGeoInfo != None:
 
-originGeoInfo = getcodeCoordFromAddr(orginAddress)
+        for tweet in geoloactedTweets(api, originGeoInfo, search_range, 10):
 
-if originGeoInfo != None:
+            latVal = None
+            lngVal = None
+            typesVal = None
+            bboxVal = None
+            text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
 
-    search_range = input('Search range (Km) : ')
+            if tweet._json["coordinates"]:
+                typesVal = "coordinates"
+                latVal = tweet._json["coordinates"]["coordinates"][1]
+                lngVal = tweet._json["coordinates"]["coordinates"][0]
 
-    for tweet in geoloactedTweets(api ,originGeoInfo, search_range, 10):
+            elif tweet._json["place"]:
+                typesVal = "bounding_box"
+                bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
+            else:
+                location = tweet._json['user']['location']
+                geoInfo = getcodeCoordFromAddr(location)
+                if geoInfo != None:
+                    latVal = geoInfo['geometry']['location']['lat'] + random.choice(range(-100, 100)) / 10000
+                    lngVal = geoInfo['geometry']['location']['lng'] + random.choice(range(-100, 100)) / 10000
 
-        latVal = None
-        lngVal = None
-        typesVal = None
-        bboxVal = None
-        text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
+            if typesVal != "bounding_box" and latVal != None and lngVal != None:
+                lat.append(latVal)
+                lng.append(lngVal)
+                places.append(orginAddress)
+                values.append(1)
+                types.append(typesVal)
+                bbox.append(bboxVal)
+                texts.append(text)
 
-        if tweet._json["coordinates"]:
-            typesVal = "coordinates"
-            latVal = tweet._json["coordinates"]["coordinates"][1]
-            lngVal = tweet._json["coordinates"]["coordinates"][0]
+        # Make a data frame with dots to show on the map
+        data = pd.DataFrame({
+            'lat': lat,
+            'lon': lng,
+            'name': places,
+            'value': values,
+            'type': types,
+            'bbox': bbox,
+            'text': texts
+        })
+        data
 
-        elif tweet._json["place"]:
-            typesVal = "bounding_box"
-            bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
-        else:
-            location = tweet._json['user']['location']
-            geoInfo = getcodeCoordFromAddr(location)
-            if geoInfo != None:
-                latVal = geoInfo['geometry']['location']['lat'] + random.choice(range(-100, 100)) / 10000
-                lngVal = geoInfo['geometry']['location']['lng'] + random.choice(range(-100, 100)) / 10000
+        print(data)
 
-        if typesVal != "bounding_box" and latVal != None and lngVal != None:
-            lat.append(latVal)
-            lng.append(lngVal)
-            places.append(orginAddress)
-            values.append(1)
-            types.append(typesVal)
-            bbox.append(bboxVal)
-            texts.append(text)
+        # Make an empty map
+        m = folium.Map()
 
-
-
-
-
-
-    # Make a data frame with dots to show on the map
-    data = pd.DataFrame({
-        'lat': lat,
-        'lon': lng,
-        'name': places,
-        'value': values,
-        'type': types,
-        'bbox': bbox,
-        'text': texts
-    })
-    data
-
-    print(data)
-
-    # Make an empty map
-    m = folium.Map()
-
-    folium.Circle(
+        folium.Circle(
             location=(originGeoInfo['geometry']['location']['lat'], originGeoInfo['geometry']['location']['lng']),
             popup='Search point',
             radius=search_range * 1000,
@@ -134,24 +127,31 @@ if originGeoInfo != None:
             fill_color='crimson'
         ).add_to(m)
 
-    # I can add marker one by one on the map
-    for i in range(0, len(data)):
-        if data.iloc[i]['type'] == 'coordinates' or data.iloc[i]['type'] == None:
-            folium.Marker(
-                location=[data.iloc[i]['lat'], data.iloc[i]['lon']],
-                popup=data.iloc[i]['text'],
-                color='crimson',
-                fill=True,
-                fill_color='crimson'
-            ).add_to(m)
-        elif data.iloc[i]['type'] == 'bounding_box':
-            folium.Marker(
-                location=(sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.choice(range(-100, 100)) / 10000, sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.choice(range(-100, 100)) / 10000),
-                popup=data.iloc[i]['text'],
-                color='crimson',
-                fill=True,
-                fill_color='crimson'
-            ).add_to(m)
+        # I can add marker one by one on the map
+        for i in range(0, len(data)):
+            if data.iloc[i]['type'] == 'coordinates' or data.iloc[i]['type'] == None:
+                folium.Marker(
+                    location=[data.iloc[i]['lat'], data.iloc[i]['lon']],
+                    popup=data.iloc[i]['text'],
+                    color='crimson',
+                    fill=True,
+                    fill_color='crimson'
+                ).add_to(m)
+            elif data.iloc[i]['type'] == 'bounding_box':
+                folium.Marker(
+                    location=(
+                        sum([i[1] for i in data.iloc[i]['bbox']]) / len(
+                            [i[1] for i in data.iloc[i]['bbox']]) + random.choice(
+                            range(-100, 100)) / 10000,
+                        sum([i[0] for i in data.iloc[i]['bbox']]) / len(
+                            [i[0] for i in data.iloc[i]['bbox']]) + random.choice(
+                            range(-100, 100)) / 10000),
+                    popup=data.iloc[i]['text'],
+                    color='crimson',
+                    fill=True,
+                    fill_color='crimson'
+                ).add_to(m)
 
-    # Save it as html
-    m.save('./html/location.html')
+        # Save it as html
+        m.save('./html/location.html')
+        webbrowser.open('file://' + os.path.realpath(os.getcwd() + '/html/user.html'))

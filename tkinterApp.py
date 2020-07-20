@@ -1,53 +1,55 @@
 import tkinter as tk
-import mainUser
-from tkinter import X, LEFT, RIGHT
+from mainUser import getTweetsByUser
+from tkinter import LEFT, ttk, HORIZONTAL, BOTTOM, X
+
+from main import getTweetsByAddress
 
 
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
-        self.quit = tk.Button(self, text="Close", fg="red", command=self.master.destroy)
+        self.find_address = tk.Button(self)
         self.find_user = tk.Button(self)
-        self.input_address = tk.Entry(self)
-        self.label_address = tk.Label(self, text="Find by address")
-        self.input_user = tk.Entry(self)
-        self.label_user = tk.Label(self, text="Find with user @")
+        self.label = tk.Label(self, text="Find by address or by userID :")
+        self.input = tk.Entry(self)
+        self.progressbar = ttk.Progressbar(orient=HORIZONTAL, length=250, mode='determinate')
+        self.error = tk.Label(self, text="")
         self.master = master
         self.pack()
         self.create_widgets()
 
     def create_widgets(self):
-        self.label_user.pack(side=LEFT, padx=5, pady=5)
-        self.input_user.pack(fill=X, padx=5, expand=True)
+        self.label.pack(side=LEFT, padx=5, pady=10)
+        self.input.pack(side=LEFT, padx=5, pady=10, expand=True)
 
-        self.label_address.pack(side=LEFT, padx=5, pady=5)
-        self.input_address.pack(fill=X, padx=5, expand=True)
+        self.find_user["text"] = "Find tweets by user"
+        self.find_user["command"] = self.get_by_user
+        self.find_user.pack(side=LEFT, padx=5, pady=10)
 
-        self.find_user["text"] = "Find User tweets"
-        self.find_user["command"] = self.get_user
-        self.find_user.pack(side="left", ipadx=20, padx=30)
+        self.find_address["text"] = "Find tweets by Address"
+        self.find_address["command"] = self.get_by_address
+        self.find_address.pack(side=LEFT, padx=5, pady=10)
+        self.error.pack(fill=X)
+        self.progressbar.pack(side=BOTTOM, pady=10)
 
-        self.hastag = tk.Button(self)
-        self.hastag["text"] = "Get by #hastag"
-        self.hastag["command"] = self.get_hastag
-        self.hastag.pack(side="left", ipadx=20, padx=30)
+    def get_by_user(self):
+        if not self.input.get().strip():
+            self.error['text'] = "Input can't be empty !"
+        else:
+            self.progressbar.start()
+            getTweetsByUser("@" + self.input.get())
 
-        self.quit.pack(side=RIGHT, padx=5, pady=5)
-
-        # okButton.pack(side=RIGHT)
-
-    def get_user(self):
-        mainUser.getUserInfo("@" + self.input_user.get())
-
-    def get_hastag(self):
-        print(self.input.get())
+    def get_by_address(self):
+        if not self.input.get().strip():
+            self.error['text'] = "Input can't be empty !"
+        else:
+            getTweetsByAddress(self.input.get(), 10)
 
 
 root = tk.Tk()
 app = Application(master=root)
 
 app.master.title("Twitter search App")
-app.master.minsize(400, 400)
-app.master.maxsize(1000, 1920)
+app.master.minsize(400, 150)
 
 app.mainloop()

@@ -4,9 +4,8 @@ import webbrowser
 import tweepy
 import folium
 import pandas as pd
-from shapely.geometry import Polygon
-import json
 import random
+
 
 consumer_key = "nEfVi8N8KBmcmxWC5KqJxdHdc"
 consumer_secret = "tK8853ShfWoTaV7smB9X7Mq7RMZmqX3iv7ElmaRXvPT4FMqaqP"
@@ -59,7 +58,7 @@ def geoloactedTweets(api, geoInfo, rangeKm, count):
         geoInfo['geometry']['location']['lng']) + "," + str(rangeKm) + "km", lang="en", count=count)
 
 
-def getUserInfo(userID):
+def getTweetsByUser(userID):
     lat = []
     lng = []
     places = []
@@ -67,7 +66,6 @@ def getUserInfo(userID):
     types = []
     bbox = []
     texts = []
-
     tweets = api.user_timeline(screen_name=userID,
                                # 200 is the maximum allowed count
                                count=200,
