@@ -3,8 +3,6 @@ from geopy.geocoders import Nominatim
 import gmplot
 
 
-
-
 consumer_key = "nEfVi8N8KBmcmxWC5KqJxdHdc"
 consumer_secret = "tK8853ShfWoTaV7smB9X7Mq7RMZmqX3iv7ElmaRXvPT4FMqaqP"
 access_key = "1277992408052105217-9bvcOzqKgTx8YJlG2zf3Wtj0ptBoOy"

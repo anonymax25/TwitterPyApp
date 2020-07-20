@@ -1,3 +1,6 @@
+import os
+import webbrowser
+
 import tweepy
 import folium
 import pandas as pd
@@ -50,75 +53,68 @@ def getcodeCoordFromAddr(address):
     except:
         return None
 
+
 def geoloactedTweets(api, geoInfo, rangeKm, count):
-    return api.search(geocode=str(geoInfo['geometry']['location']['lat']) + "," + str(geoInfo['geometry']['location']['lng']) + "," + str(rangeKm) + "km", lang="en", count=count)
+    return api.search(geocode=str(geoInfo['geometry']['location']['lat']) + "," + str(
+        geoInfo['geometry']['location']['lng']) + "," + str(rangeKm) + "km", lang="en", count=count)
 
 
+def getUserInfo(userID):
+    lat = []
+    lng = []
+    places = []
+    values = []
+    types = []
+    bbox = []
+    texts = []
 
-lat = []
-lng = []
-places = []
-values = []
-types = []
-bbox = []
-texts = []
+    tweets = api.user_timeline(screen_name=userID,
+                               # 200 is the maximum allowed count
+                               count=200,
+                               include_rts=False,
+                               # Necessary to keep full_text
+                               # otherwise only the first 140 words are extracted
+                               tweet_mode='extended'
+                               )
 
-userID = input('userID : ')
+    if tweets != None:
+        for tweet in tweets:
+            print(tweet._json)
 
-tweets = api.user_timeline(screen_name=userID,
-                           # 200 is the maximum allowed count
-                           count=200,
-                           include_rts = False,
-                           # Necessary to keep full_text
-                           # otherwise only the first 140 words are extracted
-                           tweet_mode = 'extended'
-                           )
+    location = tweet._json['user']['location']
 
-if tweets != None:
+    latVal = None
+    lngVal = None
+    typesVal = None
+    bboxVal = None
 
-    for tweet in tweets:
-        print(tweet._json)
+    if tweet._json["full_text"]:
+        text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["full_text"]
+    else:
+        text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
 
-        location = tweet._json['user']['location']
+    if tweet._json["coordinates"]:
+        typesVal = "coordinates"
+        latVal = tweet._json["coordinates"]["coordinates"][1]
+        lngVal = tweet._json["coordinates"]["coordinates"][0]
 
+    elif tweet._json["place"]:
+        typesVal = "bounding_box"
+        bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
+    else:
+        geoInfo = getcodeCoordFromAddr(location)
+    if geoInfo != None:
+        latVal = geoInfo['geometry']['location']['lat']
+        lngVal = geoInfo['geometry']['location']['lng']
 
-
-        latVal = None
-        lngVal = None
-        typesVal = None
-        bboxVal = None
-        if tweet._json["full_text"]:
-            text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["full_text"]
-        else:
-            text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
-
-        if tweet._json["coordinates"]:
-            typesVal = "coordinates"
-            latVal = tweet._json["coordinates"]["coordinates"][1]
-            lngVal = tweet._json["coordinates"]["coordinates"][0]
-
-        elif tweet._json["place"]:
-            typesVal = "bounding_box"
-            bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
-        else:
-            geoInfo = getcodeCoordFromAddr(location)
-            if geoInfo != None:
-                latVal = geoInfo['geometry']['location']['lat']
-                lngVal = geoInfo['geometry']['location']['lng']
-
-        if typesVal != "bounding_box" and latVal != None and lngVal != None:
-            lat.append(latVal)
-            lng.append(lngVal)
-            places.append('origin')
-            values.append(1)
-            types.append(typesVal)
-            bbox.append(bboxVal)
-            texts.append(text)
-
-
-
-
-
+    if typesVal != "bounding_box" and latVal != None and lngVal != None:
+        lat.append(latVal)
+        lng.append(lngVal)
+        places.append('origin')
+        values.append(1)
+        types.append(typesVal)
+        bbox.append(bboxVal)
+        texts.append(text)
 
     # Make a data frame with dots to show on the map
     data = pd.DataFrame({
@@ -137,8 +133,6 @@ if tweets != None:
     # Make an empty map
     m = folium.Map()
 
-
-
     # I can add marker one by one on the map
     for i in range(0, len(data)):
         if data.iloc[i]['type'] == 'coordinates' or data.iloc[i]['type'] == None:
@@ -151,7 +145,12 @@ if tweets != None:
             ).add_to(m)
         elif data.iloc[i]['type'] == 'bounding_box':
             folium.Marker(
-                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.Choice(range(-100,100)), sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.Choice(range(-100,100))],
+                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len(
+                    [i[1] for i in data.iloc[i]['bbox']]) + random.Choice(
+                    range(-100, 100)),
+                          sum([i[0] for i in data.iloc[i]['bbox']]) / len(
+                              [i[0] for i in data.iloc[i]['bbox']]) + random.Choice(
+                              range(-100, 100))],
                 popup=data.iloc[i]['text'],
                 color='crimson',
                 fill=True,
@@ -160,3 +159,4 @@ if tweets != None:
 
     # Save it as html
     m.save('./html/user.html')
+    webbrowser.open('file://' + os.path.realpath(os.getcwd() + '/html/user.html'))
