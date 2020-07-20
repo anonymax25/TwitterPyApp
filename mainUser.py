@@ -78,43 +78,43 @@ def getUserInfo(userID):
                                )
 
     if tweets != None:
+
         for tweet in tweets:
             print(tweet._json)
 
-    location = tweet._json['user']['location']
+            latVal = None
+            lngVal = None
+            typesVal = None
+            bboxVal = None
 
-    latVal = None
-    lngVal = None
-    typesVal = None
-    bboxVal = None
+            if tweet._json["full_text"]:
+                text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["full_text"]
+            else:
+                text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
 
-    if tweet._json["full_text"]:
-        text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["full_text"]
-    else:
-        text = "Tweet by : " + tweet._json["user"]["screen_name"] + "               " + tweet._json["text"]
+            if tweet._json["coordinates"]:
+                typesVal = "coordinates"
+                latVal = tweet._json["coordinates"]["coordinates"][1]
+                lngVal = tweet._json["coordinates"]["coordinates"][0]
 
-    if tweet._json["coordinates"]:
-        typesVal = "coordinates"
-        latVal = tweet._json["coordinates"]["coordinates"][1]
-        lngVal = tweet._json["coordinates"]["coordinates"][0]
+            elif tweet._json["place"]:
+                typesVal = "bounding_box"
+                bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
+            else:
+                location = tweet._json['user']['location']
+                geoInfo = getcodeCoordFromAddr(location)
+            if geoInfo != None:
+                latVal = geoInfo['geometry']['location']['lat'] + random.choice(range(-100, 100)) / 10000
+                lngVal = geoInfo['geometry']['location']['lng'] + random.choice(range(-100, 100)) / 10000
 
-    elif tweet._json["place"]:
-        typesVal = "bounding_box"
-        bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
-    else:
-        geoInfo = getcodeCoordFromAddr(location)
-    if geoInfo != None:
-        latVal = geoInfo['geometry']['location']['lat']
-        lngVal = geoInfo['geometry']['location']['lng']
-
-    if typesVal != "bounding_box" and latVal != None and lngVal != None:
-        lat.append(latVal)
-        lng.append(lngVal)
-        places.append('origin')
-        values.append(1)
-        types.append(typesVal)
-        bbox.append(bboxVal)
-        texts.append(text)
+            if typesVal != "bounding_box" and latVal != None and lngVal != None:
+                lat.append(latVal)
+                lng.append(lngVal)
+                places.append('origin')
+                values.append(1)
+                types.append(typesVal)
+                bbox.append(bboxVal)
+                texts.append(text)
 
     # Make a data frame with dots to show on the map
     data = pd.DataFrame({
@@ -145,12 +145,8 @@ def getUserInfo(userID):
             ).add_to(m)
         elif data.iloc[i]['type'] == 'bounding_box':
             folium.Marker(
-                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len(
-                    [i[1] for i in data.iloc[i]['bbox']]) + random.Choice(
-                    range(-100, 100)),
-                          sum([i[0] for i in data.iloc[i]['bbox']]) / len(
-                              [i[0] for i in data.iloc[i]['bbox']]) + random.Choice(
-                              range(-100, 100))],
+                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.choice(range(-100, 100)) / 10000,
+                          sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.choice(range(-100, 100)) / 10000],
                 popup=data.iloc[i]['text'],
                 color='crimson',
                 fill=True,

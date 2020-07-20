@@ -72,11 +72,6 @@ if originGeoInfo != None:
     search_range = input('Search range (Km) : ')
 
     for tweet in geoloactedTweets(api ,originGeoInfo, search_range, 10):
-        #print(tweet._json)
-
-        location = tweet._json['user']['location']
-
-
 
         latVal = None
         lngVal = None
@@ -93,10 +88,11 @@ if originGeoInfo != None:
             typesVal = "bounding_box"
             bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
         else:
+            location = tweet._json['user']['location']
             geoInfo = getcodeCoordFromAddr(location)
             if geoInfo != None:
-                latVal = geoInfo['geometry']['location']['lat']
-                lngVal = geoInfo['geometry']['location']['lng']
+                latVal = geoInfo['geometry']['location']['lat'] + random.choice(range(-100, 100)) / 10000
+                lngVal = geoInfo['geometry']['location']['lng'] + random.choice(range(-100, 100)) / 10000
 
         if typesVal != "bounding_box" and latVal != None and lngVal != None:
             lat.append(latVal)
@@ -130,7 +126,7 @@ if originGeoInfo != None:
     m = folium.Map()
 
     folium.Circle(
-            location=[originGeoInfo['geometry']['location']['lat'], originGeoInfo['geometry']['location']['lng']],
+            location=(originGeoInfo['geometry']['location']['lat'], originGeoInfo['geometry']['location']['lng']),
             popup='Search point',
             radius=search_range * 1000,
             color='crimson',
@@ -150,7 +146,7 @@ if originGeoInfo != None:
             ).add_to(m)
         elif data.iloc[i]['type'] == 'bounding_box':
             folium.Marker(
-                location=[sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.Choice(range(-10,10)), sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.Choice(range(-10,10))],
+                location=(sum([i[1] for i in data.iloc[i]['bbox']]) / len([i[1] for i in data.iloc[i]['bbox']]) + random.choice(range(-100, 100)) / 10000, sum([i[0] for i in data.iloc[i]['bbox']]) / len([i[0] for i in data.iloc[i]['bbox']]) + random.choice(range(-100, 100)) / 10000),
                 popup=data.iloc[i]['text'],
                 color='crimson',
                 fill=True,
