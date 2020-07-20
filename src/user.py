@@ -21,30 +21,6 @@ auth.set_access_token(access_key, access_secret)
 
 api = tweepy.API(auth)
 
-'''
-places = api.geo_search(query="FRANCE", granularity="country")
-place_id = places[0].id
-tweets = api.search(q="place:%s" % place_id, count=2)
-'''
-
-'''
-def geoTweets(geoInfo, range):
-
-    tweets = []
-    places = api.geo_search(lat=geoInfo['geometry']['location']['lat'], long=geoInfo['geometry']['location']['lng'], range=str(range) + "km", max_results=5)
-
-    for i in places:
-        l = api.search(q='place:'+places[0].id, count=100)
-        for t in l:
-            tweets.append(t)
-    return tweets
-
-
-
-#geoloactedTweets(api,30,30,3000,5)
-'''
-
-
 def getcodeCoordFromAddr(address):
     import googlemaps
     gmaps = googlemaps.Client('AIzaSyCNPwtdvyRqQrAUIxCUjSDVKXzy3eZj-NI')  # yay la sécurité

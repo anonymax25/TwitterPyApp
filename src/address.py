@@ -14,6 +14,7 @@ consumer_secret = cfg["consumer_secret"]
 access_key = cfg["access_key"]
 access_secret = cfg["access_secret"]
 bearer_token = cfg["bearer_token"]
+maps_key = cfg["maps_key"]
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_key, access_secret)
@@ -22,7 +23,7 @@ api = tweepy.API(auth)
 
 def getcodeCoordFromAddr(address):
     import googlemaps
-    gmaps = googlemaps.Client('AIzaSyCNPwtdvyRqQrAUIxCUjSDVKXzy3eZj-NI')  # yay la sécurité
+    gmaps = googlemaps.Client(maps_key)  # yay la sécurité
 
     res = gmaps.geocode(address)
     try:

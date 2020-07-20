@@ -1,8 +1,7 @@
 import tkinter as tk
-from mainUser import getTweetsByUser
 from tkinter import LEFT, ttk, HORIZONTAL, BOTTOM, X
-
-from main import getTweetsByAddress
+from src.user import getTweetsByUser
+from src.address import getTweetsByAddress
 
 
 class Application(tk.Frame):
