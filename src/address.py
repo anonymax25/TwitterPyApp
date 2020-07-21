@@ -6,7 +6,7 @@ import pandas as pd
 import random
 import yaml
 
-with open("config.yml", "r") as conf:
+with open("../config.yml", "r") as conf:
     cfg = yaml.load(conf, Loader=yaml.FullLoader)
 
 consumer_key = cfg["consumer_key"]
