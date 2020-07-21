@@ -22,6 +22,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 def getcodeCoordFromAddr(address):
+    print("Addr call")
     import googlemaps
     gmaps = googlemaps.Client(maps_key)  # yay la sécurité
 
@@ -46,7 +47,13 @@ def getTweetsByAddress(orginAddress, search_range):
     bbox = []
     texts = []
 
+
+
     originGeoInfo = getcodeCoordFromAddr(orginAddress)
+
+    seenlocation = {}
+
+    seenlocation[orginAddress] = originGeoInfo
 
     if originGeoInfo != None:
 
@@ -68,7 +75,13 @@ def getTweetsByAddress(orginAddress, search_range):
                 bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
             else:
                 location = tweet._json['user']['location']
-                geoInfo = getcodeCoordFromAddr(location)
+
+                if location in seenlocation:
+                    geoInfo = seenlocation[location]
+                else:
+                    geoInfo = getcodeCoordFromAddr(location)
+                    seenlocation[location] = geoInfo
+
                 if geoInfo != None:
                     latVal = geoInfo['geometry']['location']['lat'] + random.choice(range(-100, 100)) / 10000
                     lngVal = geoInfo['geometry']['location']['lng'] + random.choice(range(-100, 100)) / 10000
@@ -102,7 +115,7 @@ def getTweetsByAddress(orginAddress, search_range):
         folium.Circle(
             location=(originGeoInfo['geometry']['location']['lat'], originGeoInfo['geometry']['location']['lng']),
             popup='Search point',
-            radius=search_range * 1000,
+            radius=search_range,
             color='crimson',
             fill=True,
             fill_color='crimson'
@@ -134,5 +147,5 @@ def getTweetsByAddress(orginAddress, search_range):
                 ).add_to(m)
 
         # Save it as html
-        m.save('./html/location.html')
-        webbrowser.open('file://' + os.path.realpath(os.getcwd() + '/html/user.html'))
+        m.save('../html/location.html')
+        webbrowser.open('file://' + os.path.realpath(os.getcwd().replace('\src','') + '/html/location.html'))

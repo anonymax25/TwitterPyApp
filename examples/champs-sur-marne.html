@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_61223403607845538a7f5211b38d1294 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_61223403607845538a7f5211b38d1294" ></div>
+        
+</body>
+<script>    
+    
+            var map_61223403607845538a7f5211b38d1294 = L.map(
+                "map_61223403607845538a7f5211b38d1294",
+                {
+                    center: [0, 0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 1,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f8262ed8d916427b80f3fe34250463f2 = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+            var circle_3deec394b5024a4585be8f638e5d4c9e = L.circle(
+                [48.7920169, 2.6515144],
+                {"bubblingMouseEvents": true, "color": "crimson", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "crimson", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": "10101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010", "stroke": true, "weight": 3}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_945628d73eb5486b81454dce754a157e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2b142e1699b24491b2f84c494be669d2 = $(`<div id="html_2b142e1699b24491b2f84c494be669d2" style="width: 100.0%; height: 100.0%;">Search point</div>`)[0];
+            popup_945628d73eb5486b81454dce754a157e.setContent(html_2b142e1699b24491b2f84c494be669d2);
+        
+
+        circle_3deec394b5024a4585be8f638e5d4c9e.bindPopup(popup_945628d73eb5486b81454dce754a157e)
+        ;
+
+        
+    
+    
+            var marker_f3f27b52ced04d65921675434d335b1e = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_fcfbf346487a4e0798bd38b858177620 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e548562238f4437692da40098863ba1c = $(`<div id="html_e548562238f4437692da40098863ba1c" style="width: 100.0%; height: 100.0%;">Tweet by : DLPHelp               @K_MacBow I am sorry to hear this! You are able to contact our dedicated phone line for the Annual Passes via 00 33… https://t.co/CGvogO5msm</div>`)[0];
+            popup_fcfbf346487a4e0798bd38b858177620.setContent(html_e548562238f4437692da40098863ba1c);
+        
+
+        marker_f3f27b52ced04d65921675434d335b1e.bindPopup(popup_fcfbf346487a4e0798bd38b858177620)
+        ;
+
+        
+    
+    
+            var marker_11aa09a4243f458baab63af2b905243e = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_aa0b55f4c552450996bbf43638d00591 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_e1cc7af0fe02417698969c9495ee73f2 = $(`<div id="html_e1cc7af0fe02417698969c9495ee73f2" style="width: 100.0%; height: 100.0%;">Tweet by : DLPTownSquare               @KrisfromBelgium @One5thParis I’m such a classic person, I love the original Euro Disney Mickeys. This is my favour… https://t.co/jBjccRpiEX</div>`)[0];
+            popup_aa0b55f4c552450996bbf43638d00591.setContent(html_e1cc7af0fe02417698969c9495ee73f2);
+        
+
+        marker_11aa09a4243f458baab63af2b905243e.bindPopup(popup_aa0b55f4c552450996bbf43638d00591)
+        ;
+
+        
+    
+    
+            var marker_9ae4b60de4684e188beabbb12ef0e29c = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_a1dc9426477e4f1b8a926fd7d34adc80 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_2a6a2089d6e749ceaae5f93ed4a3aa45 = $(`<div id="html_2a6a2089d6e749ceaae5f93ed4a3aa45" style="width: 100.0%; height: 100.0%;">Tweet by : DlpStats               Highest waiting times in #DLP: Disneyland Railroad - 60 min Disneyland Railroad Discoveryland Station - 30 min Disn… https://t.co/3VGUhUBje4</div>`)[0];
+            popup_a1dc9426477e4f1b8a926fd7d34adc80.setContent(html_2a6a2089d6e749ceaae5f93ed4a3aa45);
+        
+
+        marker_9ae4b60de4684e188beabbb12ef0e29c.bindPopup(popup_a1dc9426477e4f1b8a926fd7d34adc80)
+        ;
+
+        
+    
+    
+            var marker_0244c659ae5045da882dd4319eedb809 = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_ae9f32275bc046c688b4b475e606f1c7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0c46235ceaa74915a6ef3aa83f9a5a66 = $(`<div id="html_0c46235ceaa74915a6ef3aa83f9a5a66" style="width: 100.0%; height: 100.0%;">Tweet by : DLPTownSquare               @One5thParis I really liked this name tag actually.</div>`)[0];
+            popup_ae9f32275bc046c688b4b475e606f1c7.setContent(html_0c46235ceaa74915a6ef3aa83f9a5a66);
+        
+
+        marker_0244c659ae5045da882dd4319eedb809.bindPopup(popup_ae9f32275bc046c688b4b475e606f1c7)
+        ;
+
+        
+    
+    
+            var marker_82bf69d963564b099c677b48afa4605d = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_51df0f7609e24aab80aeb2a780127015 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a2ce863d8dc6480bbb7f4c4da68b1f90 = $(`<div id="html_a2ce863d8dc6480bbb7f4c4da68b1f90" style="width: 100.0%; height: 100.0%;">Tweet by : DLPHelp               @eejitgherkin Hi there! Please do not hesitate to send me a DM with your Disney booking number, full name, email ad… https://t.co/IP5xBqo5yH</div>`)[0];
+            popup_51df0f7609e24aab80aeb2a780127015.setContent(html_a2ce863d8dc6480bbb7f4c4da68b1f90);
+        
+
+        marker_82bf69d963564b099c677b48afa4605d.bindPopup(popup_51df0f7609e24aab80aeb2a780127015)
+        ;
+
+        
+    
+    
+            var marker_af8b85eecf7e4f80ab06a71d6e2cdc15 = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_c42089fa9f614f54a3c70c1060b08a72 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_9a541821d0b642898a65b9a61d8da3be = $(`<div id="html_9a541821d0b642898a65b9a61d8da3be" style="width: 100.0%; height: 100.0%;">Tweet by : DLPHelp               @NATJ111 Hi Natasha, Please know you are able to contact our dedicated Annual Pass phone line at 00 33 1 60 30 60 6… https://t.co/ewgmSR5sWN</div>`)[0];
+            popup_c42089fa9f614f54a3c70c1060b08a72.setContent(html_9a541821d0b642898a65b9a61d8da3be);
+        
+
+        marker_af8b85eecf7e4f80ab06a71d6e2cdc15.bindPopup(popup_c42089fa9f614f54a3c70c1060b08a72)
+        ;
+
+        
+    
+    
+            var marker_8ea05561757148ab90ab12b759385576 = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_2e43171a793444d5aa8d9bb04dacff12 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a87bf2c571934356b9e7aa26185587a7 = $(`<div id="html_a87bf2c571934356b9e7aa26185587a7" style="width: 100.0%; height: 100.0%;">Tweet by : DLPHelp               @adamjl123 @DisneylandParis Understood. Would you be able to send me another DM so we can check together? Lexi ºoº</div>`)[0];
+            popup_2e43171a793444d5aa8d9bb04dacff12.setContent(html_a87bf2c571934356b9e7aa26185587a7);
+        
+
+        marker_8ea05561757148ab90ab12b759385576.bindPopup(popup_2e43171a793444d5aa8d9bb04dacff12)
+        ;
+
+        
+    
+    
+            var marker_8f558a003a114f3fa494ffb94f88653b = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_8ebd5fca462b44ccb3d8b04ba3cadc1b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f16d84b04d9346c0b1aaba2d772c0b74 = $(`<div id="html_f16d84b04d9346c0b1aaba2d772c0b74" style="width: 100.0%; height: 100.0%;">Tweet by : DlpStats               Les Voyages de Pinocchio has been temporarily interrupted. On average, an interruption takes 70 minutes.… https://t.co/Ypa2RRV4Jm</div>`)[0];
+            popup_8ebd5fca462b44ccb3d8b04ba3cadc1b.setContent(html_f16d84b04d9346c0b1aaba2d772c0b74);
+        
+
+        marker_8f558a003a114f3fa494ffb94f88653b.bindPopup(popup_8ebd5fca462b44ccb3d8b04ba3cadc1b)
+        ;
+
+        
+    
+    
+            var marker_73b7ec1948004d96a5b9841bde55d874 = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_66d34b45465542fab610911eed28c3f4 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4be4e6a41f2e4aea8441ec63013a77a4 = $(`<div id="html_4be4e6a41f2e4aea8441ec63013a77a4" style="width: 100.0%; height: 100.0%;">Tweet by : DLPTownSquare               @DLPReport Same for most things. This is a real DLP revolution and I’m so here for it.</div>`)[0];
+            popup_66d34b45465542fab610911eed28c3f4.setContent(html_4be4e6a41f2e4aea8441ec63013a77a4);
+        
+
+        marker_73b7ec1948004d96a5b9841bde55d874.bindPopup(popup_66d34b45465542fab610911eed28c3f4)
+        ;
+
+        
+    
+    
+            var marker_6cf6147a08734639979f4d2cbe9fcfaf = L.marker(
+                [48.859276, 2.598505],
+                {"color": "crimson", "fill": true, "fillColor": "crimson"}
+            ).addTo(map_61223403607845538a7f5211b38d1294);
+        
+    
+        var popup_5725cb85d4f74ef38f9579975bfd1a4e = L.popup({"maxWidth": "100%"});
+
+        
+            var html_41440d6a8caf482e89000c1ef7b6b951 = $(`<div id="html_41440d6a8caf482e89000c1ef7b6b951" style="width: 100.0%; height: 100.0%;">Tweet by : DLPTownSquare               @DLPReport PhotoPass are killing this reopening. It’s so great to see.</div>`)[0];
+            popup_5725cb85d4f74ef38f9579975bfd1a4e.setContent(html_41440d6a8caf482e89000c1ef7b6b951);
+        
+
+        marker_6cf6147a08734639979f4d2cbe9fcfaf.bindPopup(popup_5725cb85d4f74ef38f9579975bfd1a4e)
+        ;
+
+        
+    
+</script>

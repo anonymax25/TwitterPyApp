@@ -22,6 +22,7 @@ auth.set_access_token(access_key, access_secret)
 api = tweepy.API(auth)
 
 def getcodeCoordFromAddr(address):
+    print("Addr call")
     import googlemaps
     gmaps = googlemaps.Client('AIzaSyCNPwtdvyRqQrAUIxCUjSDVKXzy3eZj-NI')  # yay la sécurité
 
@@ -56,6 +57,8 @@ def getTweetsByUser(userID):
 
     if tweets != None:
 
+        seenlocation = {}
+
         for tweet in tweets:
             print(tweet._json)
 
@@ -79,7 +82,13 @@ def getTweetsByUser(userID):
                 bboxVal = tweet._json["place"]["bounding_box"]["coordinates"][0]
             else:
                 location = tweet._json['user']['location']
-                geoInfo = getcodeCoordFromAddr(location)
+
+                if location in seenlocation:
+                    geoInfo = seenlocation[location]
+                else:
+                    geoInfo = getcodeCoordFromAddr(location)
+                    seenlocation[location] = geoInfo
+
             if geoInfo != None:
                 latVal = geoInfo['geometry']['location']['lat'] + random.choice(range(-100, 100)) / 10000
                 lngVal = geoInfo['geometry']['location']['lng'] + random.choice(range(-100, 100)) / 10000
@@ -131,5 +140,6 @@ def getTweetsByUser(userID):
             ).add_to(m)
 
     # Save it as html
-    m.save('./html/user.html')
-    webbrowser.open('file://' + os.path.realpath(os.getcwd() + '/html/user.html'))
+    m.save('../html/user.html')
+
+    webbrowser.open('file://' + os.path.realpath(os.getcwd().replace('\src','') + '/html/user.html'))
